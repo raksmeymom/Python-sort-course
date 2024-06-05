@@ -66,7 +66,6 @@ def find_max_score() -> None:
     else:
         print("No student information found.")
 
-student_infos = []
 def add_new_student_info() -> None:
   
   """
