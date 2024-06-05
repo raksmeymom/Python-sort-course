@@ -1,6 +1,6 @@
 
 from data import student_grads as  student_infos
-# print("Student Graduation:", student_infos)
+print("Student Graduation:", student_infos)
 
 def show_menu()-> None: 
     """
@@ -20,7 +20,6 @@ def show_menu()-> None:
     print("4.Modify student score")
     print("5.Count female and male student")
     print("0.Exting")
-
 
 def table_header()-> None:
     id = "ID"
@@ -51,92 +50,90 @@ def print_all_student() -> None:
         table_record(student_info)
 print_all_student()
 
-def print_highest_score_student() -> None:
-    """
-    This function finds the student with the highest score and prints their information.
-    """
-    highest_score = 0
-    highest_scoring_student = None
+def find_max_score() -> None:
+    max_score = 0
+    max_student_info = None
     for student_info in student_infos:
-        student_scores = student_info[3]
-        total_score = sum(student_scores)
-    if total_score > highest_score:
-        highest_score = total_score
-        highest_scoring_student = student_info
+        total_score = sum(student_info[3])
+        if total_score > max_score:
+            max_score = total_score
+            max_student_info = student_info
 
-    if highest_scoring_student:
+    if max_student_info:
         print("Student with the highest score:")
         table_header()
-        table_record(highest_scoring_student)
+        table_record(max_student_info)
     else:
-        print("No student data found.")
-print_all_student()
+        print("No student information found.")
 
-def add_new_student() -> None:
+student_infos = []
+def add_new_student_info() -> None:
+  
   """
-  This function prompts the user for new student information and adds it to the student data.
+  This function allows the user to add new student information.
   """
-  new_student_id = get_student_id()
-  new_student_name = get_student_name()
-  new_student_gender = get_student_gender()
-  new_student_scores = get_student_scores()
-  student_infos.append((new_student_id, new_student_name, new_student_gender, new_student_scores))
-print("New student information added successfully!")
-
-def get_student_id() -> int:
-  pass
-def get_student_name() -> str:
-  pass
-def get_student_gender() -> bool:
-  pass
-def get_student_scores() -> tuple:
-  pass
+  id = input("Enter student ID: ")
+  name = input("Enter student name: ")
+  gender = input("Enter student gender (M/F): ").upper()
+  math = float(input("Enter math score: "))
+  physic = float(input("Enter physic score: "))
+  chemistry = float(input("Enter chemistry score: "))
+  new_student_info = (len(student_infos) + 1, name, gender == "M", (math, physic, chemistry))
+  student_infos.append(new_student_info)  
+  print("Student information added successfully!")
 
 
 def modify_student_score() -> None:
-  """
-  This function allows modifying an existing student's score.
-  """
-  student_id = get_student_id_to_modify()
-  student_index = find_student_by_id(student_id)
-  if student_index is not None:
-    new_student_scores = get_student_scores()
-    student_infos[student_index] = (student_infos[student_index][0], student_infos[student_index][1], student_infos[student_index][2], new_student_scores)
-    print("Student score modified successfully!")
-  else:
-    print("Student with ID", student_id, "not found.")
+    """
+    This function allows the user to modify a student's scores.
+    """
+    student_id = input("Enter student ID whose score you want to modify: ")
+    for student_info in student_infos:
+        if student_info[0] == student_id:
+            math = float(input("Enter new math score: "))
+            physic = float(input("Enter new physic score: "))
+            chemistry = float(input("Enter new chemistry score: "))
+            student_info[3] = (math, physic, chemistry)
+            print("Student score modified successfully.")
+            return
+    print("Student ID not found.")
 
 
-def get_student_id_to_modify() -> int:
-    pass
-def find_student_by_id(student_id: int) -> int:
-  """
-  This function searches for a student with the given ID and returns the index in the student_infos list, or None if not found.
-  """
-  for index, student_info in enumerate(student_infos):
-    if student_info[0] == student_id:
-      return index
-  return None
-def get_student_scores() -> tuple:
-    pass
+def count_female_male_students() -> None:
+    """
+    This function counts the number of female and male students.
+    """
+    female_count = sum(1 for student_info in student_infos if not student_info[2])
+    male_count = len(student_infos) - female_count
+    print(f"Number of female students: {female_count}")
+    print(f"Number of male students: {male_count}")
 
 
+def menu() -> None:
+    """
+    This function displays the menu and handles user input.
+    """
+    while True:
+        show_menu()
+        choice = input("Enter your choice: ")
+        if choice == '1':
+            print_all_student()
+        elif choice == '2':
+            find_max_score()
+        elif choice == '3':
+            add_new_student_info()
+        elif choice == '4':
+            modify_student_score()
+        elif choice == '5':
+            count_female_male_students()
+        elif choice == '0':
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
 
-def count_female_and_male_students() -> None:
-  """
-  This function counts the number of female and male students and displays the results.
-  """
-  female_count = 0
-  male_count = 0
-  for student_info in student_infos:
-    is_male = student_info[2]  
-    if is_male:
-      male_count += 1
-    else:
-      female_count += 1
 
-  print("Number of Female Students:", female_count)
-  print("Number of Male Students:", male_count)
+menu()
 
 
 
