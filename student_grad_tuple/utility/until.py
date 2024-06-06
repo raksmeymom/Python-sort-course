@@ -1,5 +1,5 @@
 
-from data import student_grads as  student_infos
+from .data import student_grads as  student_infos
 print("Student Graduation:", student_infos)
 
 def show_menu()-> None: 
@@ -66,73 +66,125 @@ def find_max_score() -> None:
     else:
         print("No student information found.")
 
-def add_new_student_info() -> None:
-  
-  """
-  This function allows the user to add new student information.
-  """
-  id = input("Enter student ID: ")
-  name = input("Enter student name: ")
-  gender = input("Enter student gender (M/F): ").upper()
-  math = float(input("Enter math score: "))
-  physic = float(input("Enter physic score: "))
-  chemistry = float(input("Enter chemistry score: "))
-  new_student_info = (len(student_infos) + 1, name, gender == "M", (math, physic, chemistry))
-  student_infos.append(new_student_info)  
-  print("Student information added successfully!")
+def add_new_student()-> None:
+    
+    number_student = len(student_infos)
+    id = f"st{number_student + 1:04d}"
+    name = input("Enter student name:")
+    isMale = input("Enter gender (M/F): ")
+    isMale = True if isMale.lower() == "m" else False
+    math = float(input("Enter math score:"))
+    physic = float(input("Enter physic score:"))
+    chemistry = float(input("Enter chemistry score:"))
+    student_infos = (id, name, isMale, [math,physic,chemistry])
+    student_infos.append(student_infos)
+    print("student information added successfully")
 
-
-def modify_student_score() -> None:
-    """
-    This function allows the user to modify a student's scores.
-    """
-    student_id = input("Enter student ID whose score you want to modify: ")
+def modify_student_score():
+    print_all_student()
+    input_id = input("Enter student ID:")
+    isFound = False
     for student_info in student_infos:
-        if student_info[0] == student_id:
-            math = float(input("Enter new math score: "))
-            physic = float(input("Enter new physic score: "))
-            chemistry = float(input("Enter new chemistry score: "))
-            student_info[3] = (math, physic, chemistry)
-            print("Student score modified successfully.")
-            return
-    print("Student ID not found.")
+      if student_info[0] == input_id:
+        isFound = True
+        math = float(input("Enter math score:"))
+        physic = float(input("Enter physic score:"))
+        chemistry = float(input("Enter chemistry score:"))
+        student_info[3] [0] = math
+        student_info[3] [1] = physic
+        student_info[3] [2] = chemistry
+        print("student score modify successfully")
+        return
+    if not isFound:
+        print("Student ID not found")
 
-
-def count_female_male_students() -> None:
+def count_male_female_student() -> tuple:
+    """ 
+    return (males, females)
     """
-    This function counts the number of female and male students.
-    """
-    female_count = sum(1 for student_info in student_infos if not student_info[2])
-    male_count = len(student_infos) - female_count
-    print(f"Number of female students: {female_count}")
-    print(f"Number of male students: {male_count}")
-
-
-def menu() -> None:
-    """
-    This function displays the menu and handles user input.
-    """
-    while True:
-        show_menu()
-        choice = input("Enter your choice: ")
-        if choice == '1':
-            print_all_student()
-        elif choice == '2':
-            find_max_score()
-        elif choice == '3':
-            add_new_student_info()
-        elif choice == '4':
-            modify_student_score()
-        elif choice == '5':
-            count_female_male_students()
-        elif choice == '0':
-            print("Exiting...")
-            break
+    total_female = 0
+    total_male = 0
+    for student_info in student_infos:
+        if student_info[2]:
+            total_male += 1
         else:
-            print("Invalid choice. Please try again.")
+            total_female += 1
+    return total_male, total_female
+
+modify_student_score()
+add_new_student()
+print_all_student()
+    
+   
 
 
-menu()
+# def add_new_student_info() -> None:
+  
+#   """
+#   This function allows the user to add new student information.
+#   """
+#   id = input("Enter student ID: ")
+#   name = input("Enter student name: ")
+#   gender = input("Enter student gender (M/F): ").upper()
+#   math = float(input("Enter math score: "))
+#   physic = float(input("Enter physic score: "))
+#   chemistry = float(input("Enter chemistry score: "))
+#   new_student_info = (len(student_infos) + 1, name, gender == "M", (math, physic, chemistry))
+#   student_infos.append(new_student_info)  
+#   print("Student information added successfully!")
+
+
+# def modify_student_score() -> None:
+#     """
+#     This function allows the user to modify a student's scores.
+#     """
+#     student_id = input("Enter student ID whose score you want to modify: ")
+#     for student_info in student_infos:
+#         if student_info[0] == student_id:
+#             math = float(input("Enter new math score: "))
+#             physic = float(input("Enter new physic score: "))
+#             chemistry = float(input("Enter new chemistry score: "))
+#             student_info[3] = (math, physic, chemistry)
+#             print("Student score modified successfully.")
+#             return
+#     print("Student ID not found.")
+
+
+# def count_female_male_students() -> None:
+#     """
+#     This function counts the number of female and male students.
+#     """
+#     female_count = sum(1 for student_info in student_infos if not student_info[2])
+#     male_count = len(student_infos) - female_count
+#     print(f"Number of female students: {female_count}")
+#     print(f"Number of male students: {male_count}")
+
+
+# def menu() -> None:
+#     """
+#     This function displays the menu and handles user input.
+#     """
+#     while True:
+#         show_menu()
+#         choice = input("Enter your choice: ")
+#         if choice == '1':
+#             print_all_student()
+#         elif choice == '2':
+#             find_max_score()
+#         elif choice == '3':
+#             add_new_student_info()
+#         elif choice == '4':
+#             modify_student_score()
+#         elif choice == '5':
+#             count_female_male_students()
+#         elif choice == '0':
+#             print("Exiting...")
+#             break
+#         else:
+#             print("Invalid choice. Please try again.")
+
+
+# menu()
 
 
 
